@@ -1,5 +1,12 @@
-# Vmsc
+# VMSC - VM's for School Chromebooks
+> Pronounced "Wimsy"
 
+## Purpose
+To combat the ever-increasing lock-in forced on students across the world.
+This project aims to provide login-free browser based access to fully fledged Linux virtual machines,
+to be used in classrooms and other educational settings.
+
+## Installation and setup
 To start your Phoenix server:
 
   * Run `mix setup` to install and setup dependencies
