@@ -1,0 +1,15 @@
+services:
+  web:
+    build: .
+    restart: always
+    ports:
+      - 4000:4000
+    env_file:
+      - ./.dev.env
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    env_file:
+      - ./.dev.env
