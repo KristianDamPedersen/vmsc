@@ -35,3 +35,8 @@ vmsc-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Environment files
+*.env
+
+# Local postgres data
+postgres-data
