@@ -1,4 +1,4 @@
-defmodule Vmsc.Umbrella.MixProject do
+defmodule Browservm.Umbrella.MixProject do
   use Mix.Project
 
   def project do

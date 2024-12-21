@@ -10,8 +10,8 @@
 import Config
 
 # Configure Mix tasks and generators
-config :vmsc,
-  ecto_repos: [Vmsc.Repo]
+config :browservm,
+  ecto_repos: [Browservm.Repo]
 
 # Configures the mailer
 #
@@ -20,43 +20,43 @@ config :vmsc,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :vmsc, Vmsc.Mailer, adapter: Swoosh.Adapters.Local
+config :browservm, Browservm.Mailer, adapter: Swoosh.Adapters.Local
 
-config :vmsc_web,
-  ecto_repos: [Vmsc.Repo],
-  generators: [context_app: :vmsc]
+config :browservm_web,
+  ecto_repos: [Browservm.Repo],
+  generators: [context_app: :browservm]
 
 # Configures the endpoint
-config :vmsc_web, VmscWeb.Endpoint,
+config :browservm_web, BrowservmWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [html: VmscWeb.ErrorHTML, json: VmscWeb.ErrorJSON],
+    formats: [html: BrowservmWeb.ErrorHTML, json: BrowservmWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: Vmsc.PubSub,
-  live_view: [signing_salt: "r9c0V77H"]
+  pubsub_server: Browservm.PubSub,
+  live_view: [signing_salt: "NbJdJmAj"]
 
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",
-  vmsc_web: [
+  browservm_web: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
-    cd: Path.expand("../apps/vmsc_web/assets", __DIR__),
+    cd: Path.expand("../apps/browservm_web/assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "3.4.3",
-  vmsc_web: [
+  browservm_web: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.css
       --output=../priv/static/assets/app.css
     ),
-    cd: Path.expand("../apps/vmsc_web/assets", __DIR__)
+    cd: Path.expand("../apps/browservm_web/assets", __DIR__)
   ]
 
 # Configures Elixir's Logger

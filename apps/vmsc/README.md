@@ -1,3 +1,0 @@
-# Vmsc
-
-**TODO: Add description**
