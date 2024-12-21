@@ -20,6 +20,12 @@ defmodule BrowservmWeb.Router do
     get "/", HomeController, :index
   end
 
+  scope "/console", BrowservmWeb do
+    pipe_through :browser
+
+    live "/", ConsoleLive
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", BrowservmWeb do
   #   pipe_through :api
