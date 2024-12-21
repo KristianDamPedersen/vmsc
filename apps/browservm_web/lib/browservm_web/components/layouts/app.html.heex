@@ -1,32 +1,31 @@
+<div class="h-screen w-screen flex flex-col">
 <header class="px-4 sm:px-6 lg:px-8">
   <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
     <div class="flex items-center gap-4">
       <a href="/">
         <img src={~p"/images/logo.svg"} width="36" />
       </a>
-      <p class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6">
-        v<%= Application.spec(:phoenix, :vsn) %>
+      <p class="font-sans text-base font-semibold text-indigo-500">
+        BrowserVM
       </p>
     </div>
-    <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
-      <a href="https://twitter.com/elixirphoenix" class="hover:text-zinc-700">
-        @elixirphoenix
-      </a>
-      <a href="https://github.com/phoenixframework/phoenix" class="hover:text-zinc-700">
-        GitHub
-      </a>
+    <div class="flex items-center gap-4 font-semibold leading-6 text-indigo-100">
       <a
-        href="https://hexdocs.pm/phoenix/overview.html"
-        class="rounded-lg bg-zinc-100 px-2 py-1 hover:bg-zinc-200/80"
+        href={~p"/console"}
+        class="rounded-lg bg-indigo-500 px-2 py-1 hover:bg-indigo-700"
       >
-        Get Started <span aria-hidden="true">&rarr;</span>
+        Konsol <span aria-hidden="true">&rarr;</span>
       </a>
     </div>
   </div>
 </header>
-<main class="px-4 py-20 sm:px-6 lg:px-8">
-  <div class="mx-auto max-w-2xl">
+<%!-- <main class="px-4 py-20 sm:px-6 lg:px-8 min-h-screen"> --%>
+<main class="flex-grow flex-1">
+  <%!-- <div class="mx-auto max-w-2xl"> --%>
+  <%!-- NOTE: If you want the behaviour above, simply make in the nested div inside --%>
+  <div class="w-full h-full">
     <.flash_group flash={@flash} />
     <%= @inner_content %>
   </div>
 </main>
+</div>
