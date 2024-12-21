@@ -15,19 +15,19 @@ config :vmsc, Vmsc.Repo,
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :vmsc, VmscWeb.Endpoint,
+config :vmsc_web, VmscWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "KRYByoHjzu4diL3LNE2NOKY9z2KNjby7+XEgolUJQqh06C4qUQuFT8i9IFCf41mJ",
+  secret_key_base: "Os7o6QK+3JuYExP77nwyoKvx+tWi5tdUur+5fL/XPH6jWRlLmosSGzkz6GCcGzlX",
   server: false
+
+# Print only warnings and errors during test
+config :logger, level: :warning
 
 # In test we don't send emails
 config :vmsc, Vmsc.Mailer, adapter: Swoosh.Adapters.Test
 
 # Disable swoosh api client as it is only required for production adapters
 config :swoosh, :api_client, false
-
-# Print only warnings and errors during test
-config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
