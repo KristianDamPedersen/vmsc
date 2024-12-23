@@ -70,3 +70,10 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+# Ash Configuratiog
+config :browservm, ash_domains: [Browservm.Vms]
+config :ash,
+  include_embedded_source_by_default?: false,
+  default_page_type: :keyset
+config :ash, :policies, no_filter_static_forbidden_reads?: false
