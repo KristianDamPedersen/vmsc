@@ -56,6 +56,7 @@ defmodule Browservm.Vms.Vm do
       |> Ash.create!()
 
       # TODO: Broadcast creation here to notify subscribers
+      Phoenix.PubSub.broadcast(Browservm.PubSub, "vms", :new_vm)
 
       {:ok, record}
     end
