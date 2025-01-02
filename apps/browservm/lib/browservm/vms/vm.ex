@@ -1,11 +1,15 @@
 defmodule Browservm.Vms.Vm do
   use Ash.Resource,
     domain: Browservm.Vms,
-    data_layer: Ash.DataLayer.Ets
+    data_layer: AshPostgres.DataLayer
+  require Ash.Query
 
+  postgres do
+    table "vms"
+    repo Browservm.Repo
+  end
   attributes do
-    uuid_primary_key :id
-    attribute :machine_name, :string, allow_nil?: false
+    attribute :machine_name, :string, allow_nil?: false, primary_key?: true
     attribute :ami_id, :string, allow_nil?: false
     attribute :ip_addr, :string
     attribute :status, :atom do
@@ -35,8 +39,9 @@ defmodule Browservm.Vms.Vm do
       manual Browservm.Vms.Vm.RequestVm
     end
 
-    destroy :remove_vm do
-      primary? true
+    destroy :request_remove_vm do
+      accept [:machine_name, :ami_id]
+      primary? true # Marks this action as the default destroy action
       manual Browservm.Vms.Vm.RemoveVm
     end
   end
@@ -51,19 +56,33 @@ defmodule Browservm.Vms.Vm do
     def create(changeset, _, _) do
       # TODO: Add the code for requesting / validating the VM here
       IO.puts("UNIMPLEMENTED: Requesting VM creation...")
+      machine = changeset.attributes.machine_name
 
-      record = Browservm.Vms.Vm
-      |> Ash.Changeset.for_create(:create, %{
-        machine_name: changeset.attributes.machine_name,
-        ami_id: changeset.attributes.ami_id,
-        ip_addr: "192.168.1.1",
-      })
-      |> Ash.create!()
+      # Check if VM exists
+      vm = Browservm.Vms.Vm
+      |> Ash.Query.filter(machine_name == ^machine)
+      |> Ash.read_first!()
+      IO.inspect(vm, label: "VM query response")
+      case vm do
+        nil ->
+          case Browservm.Vms.Vm
+          |> Ash.Changeset.for_create(:create, %{
+            machine_name: machine,
+            ami_id: changeset.attributes.ami_id,
+            ip_addr: "192.168.1.1",
+          })
+          |> Ash.create() do
+            {:ok, vm} ->
+              # Broadcast creation here to notify subscribers
+              Phoenix.PubSub.broadcast(Browservm.PubSub, "vms", :vm_state_change)
 
-      # Broadcast creation here to notify subscribers
-      Phoenix.PubSub.broadcast(Browservm.PubSub, "vms", :vm_state_change)
-
-      {:ok, record}
+              {:ok, vm}
+            {:error, reason} -> {:error, reason}
+          end
+        _ ->
+          # VM already exists so we return error
+          {:error, "VM already exists"}
+      end
     end
   end
 
