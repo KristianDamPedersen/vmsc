@@ -17,7 +17,7 @@ defmodule Browservm.Vms.Vm do
   end
 
   actions do
-    defaults [:read]
+    defaults [:read, :destroy]
 
     @doc """
     Creates the initial VM entry in the database.
@@ -33,6 +33,11 @@ defmodule Browservm.Vms.Vm do
       accept [:machine_name, :ami_id]
       primary? true # Marks this action as the default create action
       manual Browservm.Vms.Vm.RequestVm
+    end
+
+    destroy :remove_vm do
+      primary? true
+      manual Browservm.Vms.Vm.RemoveVm
     end
   end
 
@@ -55,11 +60,39 @@ defmodule Browservm.Vms.Vm do
       })
       |> Ash.create!()
 
-      # TODO: Broadcast creation here to notify subscribers
-      Phoenix.PubSub.broadcast(Browservm.PubSub, "vms", :new_vm)
+      # Broadcast creation here to notify subscribers
+      Phoenix.PubSub.broadcast(Browservm.PubSub, "vms", :vm_state_change)
 
       {:ok, record}
     end
+  end
 
+  defmodule RemoveVm do
+    use Ash.Resource.ManualDestroy
+
+    # BUG: Destroy on non-existent resource doesn't trigger an error
+
+    @doc """
+    Removes a VM. This function wraps the normal destroy function, with the nescessary logic to request the removal
+    from Hetzner.
+    """
+    def destroy(changeset, _, _) do
+      IO.inspect(changeset, label: "Changeset")
+
+      # TODO: Add the code for deleting the VM
+      IO.puts("UNIMPLEMENTED: Reqesting the deletion of the VM")
+
+      # Call the actual delete on this
+      vm = changeset.data
+      |> Ash.Changeset.for_destroy(:destroy)
+      |> Ash.destroy(return_destroyed?: true)
+
+      # Broadcast state change
+      Phoenix.PubSub.broadcast(Browservm.PubSub, "vms", :vm_state_change)
+
+      IO.inspect(vm, label: "Destroyed VM")
+
+      vm
+    end
   end
 end
