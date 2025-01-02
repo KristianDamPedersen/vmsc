@@ -77,3 +77,4 @@ config :ash,
   include_embedded_source_by_default?: false,
   default_page_type: :keyset
 config :ash, :policies, no_filter_static_forbidden_reads?: false
+# config :ash, :disable_async?, true

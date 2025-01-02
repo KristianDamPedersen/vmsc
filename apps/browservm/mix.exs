@@ -44,6 +44,7 @@ defmodule Browservm.MixProject do
       {:swoosh, "~> 1.5"},
       {:finch, "~> 0.13"},
       {:ash, "~> 3.0"},
+      {:ash_postgres, "~> 2.0.0"},
       {:picosat_elixir, "~> 0.2"}
     ]
   end
@@ -56,7 +57,7 @@ defmodule Browservm.MixProject do
       setup: ["deps.get", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run #{__DIR__}/priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ash_postgres.create --quiet", "ash_postgres.migrate --quiet", "test"]
     ]
   end
 end
