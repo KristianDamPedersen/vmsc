@@ -52,7 +52,7 @@ defmodule BrowservmWeb.ConsoleLive do
     """
   end
 
-  def handle_info(:new_vm, socket) do
+  def handle_info(:vm_state_change, socket) do
     vms = Ash.read!(Browservm.Vms.Vm)
     {:noreply, socket |> assign(:vms, vms)}
   end
