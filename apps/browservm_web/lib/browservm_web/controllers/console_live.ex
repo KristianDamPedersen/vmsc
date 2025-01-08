@@ -5,6 +5,18 @@ defmodule BrowservmWeb.ConsoleLive do
   """
   use BrowservmWeb, :live_view
 
+  def mount(_, _, socket) do
+    vms = Browservm.Vms.Vm |> Ash.read!()
+
+    # Subscribe to the vms topic
+    Phoenix.PubSub.subscribe(Browservm.PubSub, "vms")
+
+    {:ok,
+      socket
+      |> assign(:vms, vms)
+    }
+  end
+
   def render(assigns) do
     ~H"""
     <div class="h-full w-full flex justify-center">
@@ -17,10 +29,9 @@ defmodule BrowservmWeb.ConsoleLive do
         </div>
       </div>
       <ul class="w-full max-w-2xl">
-        <.render_vm machine_id="1" />
-        <.render_vm machine_id="2" />
-        <.render_vm machine_id="3" />
-        <.render_vm machine_id="4" />
+        <%= for vm <- @vms  do%>
+          <.render_vm vm={vm} />
+        <% end %>
       </ul>
       </div>
     </div>
@@ -32,12 +43,17 @@ defmodule BrowservmWeb.ConsoleLive do
     ~H"""
     <li class="my-2">
     <div class="bg-slate-100 px-2 py-1 rounded-lg transition hover:bg-indigo-200 flex justify-between">
-      <p>M#{@machine_id}</p>
+      <p>{@vm.machine_name}</p>
       <p>192.168.1.23</p>
       <p>Running</p>
       <button><span aria-hidden="true">&rarr;</span></button>
     </div>
     </li>
     """
+  end
+
+  def handle_info(:vm_state_change, socket) do
+    vms = Ash.read!(Browservm.Vms.Vm)
+    {:noreply, socket |> assign(:vms, vms)}
   end
 end
