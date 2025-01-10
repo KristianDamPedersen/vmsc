@@ -1,4 +1,16 @@
 defmodule Browservm.Vms.Vm do
+  @moduledoc """
+  The provider that can provision the virtual machines.
+  This matches the `Browservm.VmProvider` set of behaviours.
+  """
+  # @spec vm_provider() :: Browservm.VmProvider
+  # defp vm_provider() do
+  #   Application.fetch_env!(:browservm, :vm_provider)
+  # end
+  # @vm_provider Browservm.VmProvider.Utility.load_vm_provider()
+
+  @vm_provider Application.compile_env!(:browservm, :vm_provider)
+
   use Ash.Resource,
     domain: Browservm.Vms,
     data_layer: AshPostgres.DataLayer
@@ -52,6 +64,7 @@ defmodule Browservm.Vms.Vm do
     This module should not be invoked directly.
     """
     use Ash.Resource.ManualCreate
+    alias Browservm.VmProvider.Utility
 
     def create(changeset, _, _) do
       # TODO: Add the code for requesting / validating the VM here
@@ -114,4 +127,5 @@ defmodule Browservm.Vms.Vm do
       vm
     end
   end
+
 end
