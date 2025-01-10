@@ -9,7 +9,7 @@ defmodule Browservm.Vms.Vm do
   # end
   # @vm_provider Browservm.VmProvider.Utility.load_vm_provider()
 
-  @vm_provider Application.compile_env!(:browservm, :vm_provider)
+  # @vm_provider Application.compile_env!(:browservm, :vm_provider)
 
   use Ash.Resource,
     domain: Browservm.Vms,
@@ -64,7 +64,6 @@ defmodule Browservm.Vms.Vm do
     This module should not be invoked directly.
     """
     use Ash.Resource.ManualCreate
-    alias Browservm.VmProvider.Utility
 
     def create(changeset, _, _) do
       # TODO: Add the code for requesting / validating the VM here
