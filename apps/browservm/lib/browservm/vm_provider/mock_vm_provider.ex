@@ -14,4 +14,8 @@ defmodule Browservm.VmProvider.MockVmProvider do
     :ok
   end
 
+  @impl true
+  def sleep_virtual_machine() do
+    :ok
+  end
 end
