@@ -35,3 +35,8 @@ config :phoenix, :plug_init_mode, :runtime
 # Enable helpful, but potentially expensive runtime checks
 config :phoenix_live_view,
   enable_expensive_runtime_checks: true
+
+# Sets the virtual machine provider.
+# WARN: This MUST match Browservm.VmProvider's set of behaviours.
+@spec Browservm.VmProvider
+config :browservm, :vm_provider, Browservm.VmProvider.MockVmProvider

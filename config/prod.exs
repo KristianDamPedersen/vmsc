@@ -20,3 +20,7 @@ config :logger, level: :info
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.
+
+# Sets the virtual machine provider.
+# WARN: This MUST match Browservm.VmProvider's set of behaviours.
+config :browservm, :vm_provider, Browservm.VmProvider.MockVmProvider

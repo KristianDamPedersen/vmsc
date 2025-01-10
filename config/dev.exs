@@ -83,3 +83,8 @@ config :swoosh, :api_client, false
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
+
+# Custom configuration
+# Sets the virtual machine provider.
+# WARN: This MUST match Browservm.VmProvider's set of behaviours.
+config :browservm, :vm_provider, Browservm.VmProvider.MockVmProvider

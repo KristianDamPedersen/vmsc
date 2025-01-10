@@ -67,10 +67,6 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
-import_config "#{config_env()}.exs"
-
 # Ash Configuratiog
 config :browservm, ash_domains: [Browservm.Vms]
 config :ash,
@@ -78,3 +74,7 @@ config :ash,
   default_page_type: :keyset
 config :ash, :policies, no_filter_static_forbidden_reads?: false
 # config :ash, :disable_async?, true
+
+# Import environment specific config. This must remain at the bottom
+# of this file so it overrides the configuration defined above.
+import_config "#{config_env()}.exs"
